@@ -1,7 +1,7 @@
 package command
 
 import (
-	"github.com/Davidmnj91/MyExpenses/account/domain"
+	domain2 "github.com/Davidmnj91/MyExpenses/modules/account/domain"
 )
 
 type CloseAccountCommand struct {
@@ -9,7 +9,7 @@ type CloseAccountCommand struct {
 	Password string
 }
 
-func (bus *Bus) handleCloseAccountCommand(command *CloseAccountCommand) (*domain.Account, error) {
+func (bus *Bus) handleCloseAccountCommand(command *CloseAccountCommand) (*domain2.Account, error) {
 	foundAccount, foundError := bus.repository.FindByID(command.ID)
 
 	if foundError != nil {

@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/Davidmnj91/MyExpenses/payment/command"
+	command2 "github.com/Davidmnj91/MyExpenses/modules/payment/command"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -33,7 +33,7 @@ func (controller *Controller) update(ctx *gin.Context) {
 		return
 	}
 
-	cmd := &command.UpdatePaymentCommand{ID: paymentId, NewName: paymentDto.Name}
+	cmd := &command2.UpdatePaymentCommand{ID: paymentId, NewName: paymentDto.Name}
 
 	updatedPayment, err := controller.commandBus.Handle(cmd)
 

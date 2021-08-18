@@ -2,23 +2,23 @@ package query
 
 import (
 	"errors"
-	"github.com/Davidmnj91/MyExpenses/payment/entity"
-	"github.com/Davidmnj91/MyExpenses/payment/model"
-	"github.com/Davidmnj91/MyExpenses/payment/repository"
+	entity2 "github.com/Davidmnj91/MyExpenses/modules/payment/entity"
+	model2 "github.com/Davidmnj91/MyExpenses/modules/payment/model"
+	repository2 "github.com/Davidmnj91/MyExpenses/modules/payment/repository"
 )
 
 // Bus file query bus
 type Bus struct {
-	repository repository.Repository
+	repository repository2.Repository
 }
 
 // New create Bus instance
-func New(repository repository.Repository) *Bus {
+func New(repository repository2.Repository) *Bus {
 	return &Bus{repository: repository}
 }
 
 // Handle handle query
-func (bus *Bus) Handle(query interface{}) (*model.Payment, error) {
+func (bus *Bus) Handle(query interface{}) (*model2.Payment, error) {
 	switch query := query.(type) {
 	case *ReadPaymentByIDQuery:
 		return bus.handleReadPaymentByIDQuery(query)
@@ -27,12 +27,12 @@ func (bus *Bus) Handle(query interface{}) (*model.Payment, error) {
 	}
 }
 
-func (bus *Bus) entityToModel(entity entity.Payment) (*model.Payment, error) {
-	paymentConfiguration := model.PaymentConfiguration{}
+func (bus *Bus) entityToModel(entity entity2.Payment) (*model2.Payment, error) {
+	paymentConfiguration := model2.PaymentConfiguration{}
 	if err := entity.PaymentConfiguration.AssignTo(&paymentConfiguration); err != nil {
 		return nil, err
 	}
-	return &model.Payment{
+	return &model2.Payment{
 		ID:                   entity.ID,
 		Concept:              entity.Concept,
 		Amount:               entity.Amount,

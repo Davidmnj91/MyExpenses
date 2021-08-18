@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/Davidmnj91/MyExpenses/group/command"
+	command2 "github.com/Davidmnj91/MyExpenses/modules/group/command"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -24,7 +24,7 @@ func (controller *Controller) close(ctx *gin.Context) {
 		return
 	}
 
-	cmd := &command.CloseGroupCommand{ID: groupId}
+	cmd := &command2.CloseGroupCommand{ID: groupId}
 
 	closedGroup, err := controller.commandBus.Handle(cmd)
 

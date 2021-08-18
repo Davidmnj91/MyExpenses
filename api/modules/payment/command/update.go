@@ -1,15 +1,17 @@
 package command
 
-import "github.com/Davidmnj91/MyExpenses/payment/model"
+import (
+	model2 "github.com/Davidmnj91/MyExpenses/modules/payment/model"
+)
 
 type UpdatePaymentCommand struct {
 	ID                   string
 	Concept              string
 	Total                float32
-	PaymentConfiguration model.PaymentConfiguration
+	PaymentConfiguration model2.PaymentConfiguration
 }
 
-func (bus *Bus) handleUpdatePaymentCommand(command *UpdatePaymentCommand) (*model.Payment, error) {
+func (bus *Bus) handleUpdatePaymentCommand(command *UpdatePaymentCommand) (*model2.Payment, error) {
 	updatedPayment, updateError := bus.repository.Update(command.ID, command.Concept, command.Total, command.PaymentConfiguration)
 
 	if updateError != nil {

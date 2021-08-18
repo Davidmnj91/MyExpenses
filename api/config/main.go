@@ -12,7 +12,7 @@ type Config struct {
 	database DatabaseConfig
 }
 
-type ConfigInterface interface {
+type Interface interface {
 	Swagger() *Swagger
 	Server() ServerConfig
 	Database() DatabaseConfig
@@ -21,13 +21,14 @@ type ConfigInterface interface {
 const (
 	defaultHost       = "localhost"
 	defaultPort       = 5000
+	defaultDBType     = "POSTGRES"
 	defaultDBPort     = 5432
 	defaultDBUser     = "admin"
 	defaultDBPassword = "admin"
 	defaultDBName     = "myexpenses"
 )
 
-func Initialize() ConfigInterface {
+func Initialize() Interface {
 	return &Config{
 		swagger:  NewSwagger(),
 		server:   NewServerConfig(),

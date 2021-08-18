@@ -2,20 +2,20 @@ package command
 
 import (
 	"errors"
-	"github.com/Davidmnj91/MyExpenses/group/entity"
-	"github.com/Davidmnj91/MyExpenses/group/model"
-	"github.com/Davidmnj91/MyExpenses/group/repository"
+	entity2 "github.com/Davidmnj91/MyExpenses/modules/group/entity"
+	model2 "github.com/Davidmnj91/MyExpenses/modules/group/model"
+	repository2 "github.com/Davidmnj91/MyExpenses/modules/group/repository"
 )
 
 type Bus struct {
-	repository repository.Repository
+	repository repository2.Repository
 }
 
-func New(groupRepository repository.Repository) *Bus {
+func New(groupRepository repository2.Repository) *Bus {
 	return &Bus{repository: groupRepository}
 }
 
-func (bus *Bus) Handle(command interface{}) (*model.Group, error) {
+func (bus *Bus) Handle(command interface{}) (*model2.Group, error) {
 	switch command := command.(type) {
 	case *CreateGroupCommand:
 		return bus.handleCreateGroupCommand(command)
@@ -28,8 +28,8 @@ func (bus *Bus) Handle(command interface{}) (*model.Group, error) {
 	}
 }
 
-func (bus *Bus) entityToDomain(entity entity.Group) *model.Group {
-	return &model.Group{
+func (bus *Bus) entityToDomain(entity entity2.Group) *model2.Group {
+	return &model2.Group{
 		ID:        entity.ID,
 		Name:      entity.Name,
 		CreatedAt: entity.CreatedAt,

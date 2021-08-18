@@ -1,18 +1,18 @@
 package group
 
 import (
-	"github.com/Davidmnj91/MyExpenses/group/command"
-	"github.com/Davidmnj91/MyExpenses/group/controller"
-	"github.com/Davidmnj91/MyExpenses/group/repository"
+	"database/sql"
+	command2 "github.com/Davidmnj91/MyExpenses/modules/group/command"
+	controller2 "github.com/Davidmnj91/MyExpenses/modules/group/controller"
+	repository2 "github.com/Davidmnj91/MyExpenses/modules/group/repository"
 	"github.com/Davidmnj91/MyExpenses/util"
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
-func Initialize(engine *gin.Engine, db *gorm.DB, util *util.Util) {
-	repo := repository.New(db)
+func Initialize(engine *gin.Engine, db *sql.DB, util *util.Util) {
+	repo := repository2.New(db)
 
-	commandBus := command.New(repo)
+	commandBus := command2.New(repo)
 
-	controller.New(engine, commandBus, util)
+	controller2.New(engine, commandBus, util)
 }

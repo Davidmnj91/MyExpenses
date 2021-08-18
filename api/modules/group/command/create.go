@@ -1,12 +1,14 @@
 package command
 
-import "github.com/Davidmnj91/MyExpenses/group/model"
+import (
+	model2 "github.com/Davidmnj91/MyExpenses/modules/group/model"
+)
 
 type CreateGroupCommand struct {
 	Name string
 }
 
-func (bus *Bus) handleCreateGroupCommand(command *CreateGroupCommand) (*model.Group, error)  {
+func (bus *Bus) handleCreateGroupCommand(command *CreateGroupCommand) (*model2.Group, error)  {
 	createdGroup, createError := bus.repository.Create("", command.Name)
 
 	if createError != nil {

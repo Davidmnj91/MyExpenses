@@ -3,8 +3,8 @@ package query
 import (
 	"errors"
 	"github.com/Davidmnj91/MyExpenses/account/repository"
-	"github.com/Davidmnj91/MyExpenses/group/entity"
-	"github.com/Davidmnj91/MyExpenses/group/model"
+	entity2 "github.com/Davidmnj91/MyExpenses/modules/group/entity"
+	model2 "github.com/Davidmnj91/MyExpenses/modules/group/model"
 )
 
 // Bus file query bus
@@ -18,7 +18,7 @@ func New(repository repository.Repository) *Bus {
 }
 
 // Handle handle query
-func (bus *Bus) Handle(query interface{}) (*model.Group, error) {
+func (bus *Bus) Handle(query interface{}) (*model2.Group, error) {
 	switch query := query.(type) {
 	case *ReadGroupByIDQuery:
 		return bus.handleReadGroupByIDQuery(query)
@@ -27,8 +27,8 @@ func (bus *Bus) Handle(query interface{}) (*model.Group, error) {
 	}
 }
 
-func (bus *Bus) entityToModel(entity entity.Group) *model.Group {
-	return &model.Group{
+func (bus *Bus) entityToModel(entity entity2.Group) *model2.Group {
+	return &model2.Group{
 		ID:        entity.ID,
 		Name:      entity.Name,
 		CreatedAt: entity.CreatedAt,

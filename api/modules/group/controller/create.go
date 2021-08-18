@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/Davidmnj91/MyExpenses/group/command"
+	command2 "github.com/Davidmnj91/MyExpenses/modules/group/command"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -23,7 +23,7 @@ func (controller *Controller) create(ctx *gin.Context)  {
 		return
 	}
 
-	cmd := &command.CreateGroupCommand{Name: groupDto.Name}
+	cmd := &command2.CreateGroupCommand{Name: groupDto.Name}
 
 	createdGroup, err := controller.commandBus.Handle(cmd)
 

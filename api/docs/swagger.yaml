@@ -1,0 +1,252 @@
+basePath: /api/v1
+definitions:
+  controller.CreateAccountDTO:
+    properties:
+      name:
+        example: MyExpensesAccount
+        type: string
+      password:
+        example: mypassword1234
+        type: string
+    required:
+    - name
+    - password
+    type: object
+  controller.CreateGroupDTO:
+    properties:
+      name:
+        example: MyExpensesGroup
+        type: string
+    required:
+    - name
+    type: object
+  controller.UpdateAccountPasswordDTO:
+    properties:
+      new:
+        example: newPassword
+        type: string
+      password:
+        example: oldPassword
+        type: string
+    required:
+    - new
+    - password
+    type: object
+  controller.UpdateGroupDTO:
+    properties:
+      name:
+        example: MyChangedExpensesGroup
+        type: string
+    required:
+    - name
+    type: object
+  domain.AccountAnemic:
+    properties:
+      closedAt:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      openedAt:
+        type: string
+      password:
+        $ref: '#/definitions/domain.PasswordAnemic'
+      updatedAt:
+        type: string
+    type: object
+  domain.PasswordAnemic:
+    properties:
+      comparedAt:
+        type: string
+      cost:
+        type: integer
+      createdAt:
+        type: string
+      hashed:
+        type: string
+    type: object
+  model.Group:
+    properties:
+      closedAt:
+        example: "2019-12-23 12:27:37"
+        type: string
+      createdAt:
+        example: "2019-12-23 12:27:37"
+        type: string
+      id:
+        example: c6a52781-c927-42ec-bc9e-254ddde5f904
+        type: string
+      name:
+        example: MyGroup
+        type: string
+      updatedAt:
+        example: "2019-12-23 12:27:37"
+        type: string
+    type: object
+host: localhost:5000
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is My expenses api server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: MyExpenses API
+  version: "1.0"
+paths:
+  /accounts:
+    post:
+      consumes:
+      - application/json
+      description: create account
+      parameters:
+      - description: Create Account data
+        in: body
+        name: CreateAccount
+        required: true
+        schema:
+          $ref: '#/definitions/controller.CreateAccountDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.AccountAnemic'
+      security:
+      - AccessToken: []
+      tags:
+      - Accounts
+  /accounts/{id}:
+    put:
+      consumes:
+      - application/json
+      description: update account
+      parameters:
+      - description: Account ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update Password
+        in: body
+        name: group
+        required: true
+        schema:
+          $ref: '#/definitions/controller.UpdateAccountPasswordDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.AccountAnemic'
+      security:
+      - AccessToken: []
+      tags:
+      - Accounts
+  /accounts/close/{id}:
+    put:
+      consumes:
+      - application/json
+      description: close account
+      parameters:
+      - description: Account ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.AccountAnemic'
+      security:
+      - AccessToken: []
+      tags:
+      - Accounts
+  /groups:
+    post:
+      consumes:
+      - application/json
+      description: create group
+      parameters:
+      - description: Create Group data
+        in: body
+        name: CreateGroup
+        required: true
+        schema:
+          $ref: '#/definitions/controller.CreateGroupDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Group'
+      security:
+      - AccessToken: []
+      tags:
+      - Groups
+  /groups/{id}:
+    put:
+      consumes:
+      - application/json
+      description: update group
+      parameters:
+      - description: Group ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: New group name
+        in: body
+        name: group
+        required: true
+        schema:
+          $ref: '#/definitions/controller.UpdateGroupDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Group'
+      security:
+      - AccessToken: []
+      tags:
+      - Groups
+  /groups/close/{id}:
+    put:
+      consumes:
+      - application/json
+      description: close group
+      parameters:
+      - description: Group ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Group'
+      security:
+      - AccessToken: []
+      tags:
+      - Groups
+securityDefinitions:
+  AccessToken:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

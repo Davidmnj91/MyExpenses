@@ -1,45 +1,87 @@
 package infrastructure
 
 import (
-	"github.com/Davidmnj91/MyExpenses/account/domain"
-	"github.com/Davidmnj91/MyExpenses/account/entity"
-	"github.com/google/uuid"
-	"gorm.io/gorm"
+	"database/sql"
+	"github.com/Davidmnj91/MyExpenses/modules/account/domain"
+	"github.com/Davidmnj91/MyExpenses/modules/account/entity"
 )
 
 type AccountRepository struct {
-	db *gorm.DB
+	db *sql.DB
 }
 
 // NewRepository create new repository
-func NewRepository(connection *gorm.DB) domain.AccountRepository {
+func NewRepository(connection *sql.DB) domain.AccountRepository {
 	return &AccountRepository{db: connection}
 }
 
 // Save save given domain object
-func (m *AccountRepository) Save(account domain.Account) {
-	m.db.Save(convertDomainToEntity(account))
-}
+func (m *AccountRepository) Save(account domain.Account) error {
+	accountEntity := convertDomainToEntity(account)
 
-// FindNewID find new domain object id
-func (m *AccountRepository) FindNewID() (string, error) {
-	newID, err := uuid.NewRandom()
+	query := `INSERT INTO accounts(id, name, password_hashed, password_cost) VALUES (?, ?, ?, ?)`
+
+	stmt, err := m.db.Prepare(query)
+
 	if err != nil {
-		return "", err
+		return err
 	}
 
-	m.db.Save(entity.Account{ID: newID.String()})
-	return newID.String(), nil
+	defer stmt.Close()
+
+	if _, err = stmt.Exec(accountEntity.ID, accountEntity.Name, accountEntity.Password.Hashed, accountEntity.Password.Cost); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *AccountRepository) Update(account domain.Account) error {
+	accountEntity := convertDomainToEntity(account)
+
+	query := `UPDATE accounts SET name = ?, password_hashed = ?, password_cost = ?, updated_at = ?, closed_at = ? WHERE id = ?`
+
+	stmt, err := m.db.Prepare(query)
+
+	if err != nil {
+		return err
+	}
+
+	defer stmt.Close()
+
+	if _, err = stmt.Exec(accountEntity.Name, accountEntity.Password.Hashed, accountEntity.Password.Cost, accountEntity.UpdatedAt, accountEntity.CloseAt, accountEntity.ID); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // FindByID find domain object using id
 func (m *AccountRepository) FindByID(id string) (domain.Account, error) {
-	var accountEntity entity.Account
-	if err := m.db.First(&accountEntity).Error; err != nil {
+	query := `SELECT * FROM accounts WHERE id=?`
+
+	stmt, err := m.db.Prepare(query)
+
+	if err != nil {
 		return nil, err
 	}
 
-	return convertEntityToDomain(accountEntity), nil
+	defer stmt.Close()
+
+	result, err := stmt.Query(id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer result.Close()
+
+	var accountEntity = &entity.Account{}
+	if err := result.Scan(&accountEntity.ID, &accountEntity.Name, &accountEntity.CreatedAt, &accountEntity.UpdatedAt); err != nil {
+		return nil, err
+	}
+
+	return convertEntityToDomain(*accountEntity), nil
 }
 
 func convertEntityToDomain(entity entity.Account) domain.Account {
@@ -61,7 +103,7 @@ func convertDomainToEntity(account domain.Account) entity.Account {
 			Hashed: account.ToAnemic().Password.Hashed,
 			Cost:   account.ToAnemic().Password.Cost,
 		},
-		CreatedAt:  account.ToAnemic().OpenedAt,
+		CreatedAt: account.ToAnemic().OpenedAt,
 		UpdatedAt: account.ToAnemic().UpdatedAt,
 		CloseAt:   account.ToAnemic().ClosedAt,
 	}

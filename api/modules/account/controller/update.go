@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/Davidmnj91/MyExpenses/account/command"
+	command2 "github.com/Davidmnj91/MyExpenses/modules/account/command"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -11,7 +11,7 @@ import (
 // @Accept json
 // @Produce json
 // @Param id path string true "Account ID"
-// @Param group body controller.UpdateAccountPasswordDTO true "Update Password"
+// @Param group body controller.UpdateAccountPasswordDTO true "UpdateName Password"
 // @Success 201 {object} domain.AccountAnemic
 // @Router /accounts/{id} [put]
 // @Security AccessToken
@@ -33,7 +33,7 @@ func (controller *Controller) updateAccountPassword(ctx *gin.Context) {
 		return
 	}
 
-	cmd := &command.UpdateAccountCommand{
+	cmd := &command2.UpdateAccountCommand{
 		ID:       accountId,
 		Password: accountPasswordDTO.Password,
 		New:      accountPasswordDTO.New,

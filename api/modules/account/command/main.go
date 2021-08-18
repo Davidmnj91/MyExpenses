@@ -2,7 +2,7 @@ package command
 
 import (
 	"errors"
-	"github.com/Davidmnj91/MyExpenses/account/domain"
+	"github.com/Davidmnj91/MyExpenses/modules/account/domain"
 )
 
 type Bus struct {

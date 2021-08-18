@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/Davidmnj91/MyExpenses/account/command"
+	command2 "github.com/Davidmnj91/MyExpenses/modules/account/command"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -32,7 +32,7 @@ func (controller *Controller) close(ctx *gin.Context) {
 		return
 	}
 
-	cmd := &command.CloseAccountCommand{ID: accountId, Password: closeAccountDTO.Password}
+	cmd := &command2.CloseAccountCommand{ID: accountId, Password: closeAccountDTO.Password}
 
 	closedAccount, err := controller.commandBus.Handle(cmd)
 

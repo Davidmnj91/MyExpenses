@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/Davidmnj91/MyExpenses/account/command"
+	command2 "github.com/Davidmnj91/MyExpenses/modules/account/command"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -23,7 +23,7 @@ func (controller *Controller) create(ctx *gin.Context) {
 		return
 	}
 
-	cmd := command.CreateAccountCommand{Name: accountDto.Name, Password: accountDto.Password}
+	cmd := command2.CreateAccountCommand{Name: accountDto.Name, Password: accountDto.Password}
 
 	createdAccount, err := controller.commandBus.Handle(cmd)
 

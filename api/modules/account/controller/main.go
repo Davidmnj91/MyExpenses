@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/Davidmnj91/MyExpenses/account/command"
+	command2 "github.com/Davidmnj91/MyExpenses/modules/account/command"
 	"github.com/Davidmnj91/MyExpenses/util"
 	"github.com/gin-gonic/gin"
 )
@@ -9,12 +9,12 @@ import (
 // Controller group controller
 type Controller struct {
 	route      *gin.Engine
-	commandBus *command.Bus
+	commandBus *command2.Bus
 	util       *util.Util
 }
 
 // New create new http router
-func New(route *gin.Engine, bus *command.Bus, util *util.Util) *Controller {
+func New(route *gin.Engine, bus *command2.Bus, util *util.Util) *Controller {
 	controller := &Controller{
 		route:      route,
 		commandBus: bus,

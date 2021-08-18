@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/Davidmnj91/MyExpenses/group/command"
+	command2 "github.com/Davidmnj91/MyExpenses/modules/group/command"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -33,7 +33,7 @@ func (controller *Controller) update(ctx *gin.Context) {
 		return
 	}
 
-	cmd := &command.UpdateGroupCommand{ID: groupId, NewName: groupDto.Name}
+	cmd := &command2.UpdateGroupCommand{ID: groupId, NewName: groupDto.Name}
 
 	updatedGroup, err := controller.commandBus.Handle(cmd)
 

@@ -2,20 +2,20 @@ package command
 
 import (
 	"errors"
-	"github.com/Davidmnj91/MyExpenses/payment/entity"
-	"github.com/Davidmnj91/MyExpenses/payment/model"
-	"github.com/Davidmnj91/MyExpenses/payment/repository"
+	entity2 "github.com/Davidmnj91/MyExpenses/modules/payment/entity"
+	model2 "github.com/Davidmnj91/MyExpenses/modules/payment/model"
+	repository2 "github.com/Davidmnj91/MyExpenses/modules/payment/repository"
 )
 
 type Bus struct {
-	repository repository.Repository
+	repository repository2.Repository
 }
 
-func New(paymentRepository repository.Repository) *Bus {
+func New(paymentRepository repository2.Repository) *Bus {
 	return &Bus{repository: paymentRepository}
 }
 
-func (bus *Bus) Handle(command interface{}) (*model.Payment, error) {
+func (bus *Bus) Handle(command interface{}) (*model2.Payment, error) {
 	switch command := command.(type) {
 	case *CreatePaymentCommand:
 		return bus.handleCreatePaymentCommand(command)
@@ -26,12 +26,12 @@ func (bus *Bus) Handle(command interface{}) (*model.Payment, error) {
 	}
 }
 
-func (bus *Bus) entityToModel(entity entity.Payment) (*model.Payment, error) {
-	paymentConfiguration := model.PaymentConfiguration{}
+func (bus *Bus) entityToModel(entity entity2.Payment) (*model2.Payment, error) {
+	paymentConfiguration := model2.PaymentConfiguration{}
 	if err := entity.PaymentConfiguration.AssignTo(&paymentConfiguration); err != nil {
 		return nil, err
 	}
-	return &model.Payment{
+	return &model2.Payment{
 		ID:                   entity.ID,
 		Concept:              entity.Concept,
 		Amount:               entity.Amount,

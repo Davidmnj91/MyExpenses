@@ -135,7 +135,7 @@ func (a *AccountImplement) ToAnemic() AccountAnemic {
 
 // AccountRepository account repository
 type AccountRepository interface {
-	Save(account Account)
-	FindNewID() (string, error)
+	Save(account Account) error
+	Update(account Account) error
 	FindByID(id string) (Account, error)
 }

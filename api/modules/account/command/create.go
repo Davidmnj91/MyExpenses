@@ -1,7 +1,7 @@
 package command
 
 import (
-	"github.com/Davidmnj91/MyExpenses/account/domain"
+	"github.com/Davidmnj91/MyExpenses/modules/account/domain"
 	"github.com/google/uuid"
 )
 
@@ -19,7 +19,9 @@ func (bus *Bus) handleCreateAccountCommand(command *CreateAccountCommand) (*doma
 
 	account := domain.NewAccount(accountOptions)
 
-	bus.repository.Save(account)
+	if err := bus.repository.Save(account); err != nil {
+		return nil, err
+	}
 
 	return &account, nil
 }
